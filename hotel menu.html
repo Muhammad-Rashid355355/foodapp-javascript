@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="D:\internship programe\Task 4 hotel order\hotel order.css">
+                
+    
+</head>
+<body>
+    
+        <table border="5px" id="menu_tbl">
+                <thead>
+                  <tr>
+                      <th>Menu</th>
+                      <th>Price</th>
+                      <th>Check Box</th>
+                      <th>Quantity</th>
+                      <th>Cancel Order</th>
+                  </tr>
+                </thead>
+        
+                <tbody>
+                  <tr>
+                    <td>Mutton karahi</td>
+                    <td>1160</td>
+                    <td> <label>
+                            <input type="checkbox" class="checkbox" />
+                            <span>Check Box</span>
+                          </label></td>
+                    <td><input type="text" class="qty"></td>
+                    <td><button onclick="deletebtn()" id="delet_btn">Cancel order</button></td>
+                    <td><img src="D:\internship programe\Task 4 hotel order\images\mutton karahi.jfif" alt="img" width="125px" height="80px"></td>
+                    
+                  </tr>
+                  <tr>
+                        <td>Chicken Karahi</td>
+                        <td>860</td>
+                        <td><label>
+                                <input type="checkbox" class="checkbox"/>
+                                <span>Check Box</span>
+                              </label></td>
+                        <td><input type="text" class="qty"></td>
+                        <td><button onclick="deletebtn()" id="delet_btn">Cancel order</button></td>
+                        <td><img src="D:\internship programe\Task 4 hotel order\images\chicken karahi.jfif" alt="img" width="125px" height="80px"></td>
+                        
+                  </tr>
+                  <tr>
+                        <td>Biryani</td>
+                        <td>160</td>
+                        <td><label>
+                                <input type="checkbox" class="checkbox"/>
+                                <span>Check Box</span>
+                              </label></td>
+                        <td><input type="text" class="qty"></td>
+                        <td><button onclick="deletebtn()" id="delet_btn">Cancel order</button></td>
+                        <td><img src="D:\internship programe\Task 4 hotel order\images\biryani.jfif" alt="img" width="125px" height="80px"></td>
+                        
+                  </tr>
+                  <tr>
+                        <td>Dall mash</td>
+                        <td>100</td>
+                        <td><label>
+                                <input type="checkbox" class="checkbox" />
+                                <span>Check Box</span>
+                              </label></td>
+                        <td><input type="text" class="qty"></td>
+                        <td><button onclick="deletebtn()" id="delet_btn">Cancel order</button></td>
+                        <td><img src="D:\internship programe\Task 4 hotel order\images\daal mash.jfif" alt="img" width="125px" height="80px"></td>
+                  </tr>
+                  <tr>
+                        <td>Dall chana</td>
+                        <td>120</td>
+                        <td><label>
+                                <input type="checkbox" class="checkbox"/>
+                                <span>Check Box</span>
+                              </label></td>
+                        <td><input type="text" class="qty"></td>
+                        <td><button onclick="deletebtn()" id="delet_btn">Cancel order</button></td>
+                        <td><img src="D:\internship programe\Task 4 hotel order\images\daal chana.jfif" alt="img" width="125px" height="80px"></td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                                <a class="waves-effect waves-light btn"  onclick="totalbill()">Total Bill</a>
+                                <input type="text" id="bill_payment">
+                                <a class="waves-effect waves-light btn"  onclick="printbill()">Print Bill</a>
+                                <a class="waves-effect waves-light btn"  onclick="submit_data()">submit Data</a>
+                    </td>
+                    </tr>
+                  
+                </tbody>
+              </table>
+              <table id="bill_print" border="5px">
+                
+                  <th>Dishes</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+              
+              </table>
+              <script>
+                  let hotel_data =[];
+                  function totalbill(){
+                    let total = 0;
+                      let   checkitems = document.getElementsByClassName('checkbox');
+                     
+                      for(let dish of checkitems){
+                          if(dish.checked){
+                              let price = +dish.parentNode.parentNode.previousElementSibling.innerHTML;
+                              let quantity = +dish.parentNode.parentNode.nextElementSibling.querySelector('.qty').value;
+                              let colr = dish.parentNode.parentNode.parentNode.style.background = " #adcbe3 ";
+                               total += (price * quantity);
+                               bill_payment.value = total; 
+                               if(total >= 600){
+                                   let discount = (total*10/100);
+                                   let discount_price = total-discount;
+                                   bill_payment.value = discount_price;
+                               }
+                               else{
+                                bill_payment.value = total; 
+                               }
+                          }
+                      }
+                  }
+              
+              function printbill(){
+                bill_print.innerHTML= "";
+                // let   checkitems = document.getElementsByClassName('checkbox');
+                     
+                //       for(let dish of checkitems){
+                //           if(dish.checked){
+                //               let menu = dish.parentNode.parentNode.previousElementSibling.previousElementSibling.innerHTML;
+                //               let price = +dish.parentNode.parentNode.previousElementSibling.innerHTML;
+                //               let quantity = +dish.parentNode.parentNode.nextElementSibling.querySelector('.qty').value;
+                //               let images = dish.parentNode.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+                //               let payablbill = bill_payment.value;
+                          let Get_Data =  JSON.parse(localStorage.getItem("hotel_data"));
+                          Get_Data.forEach(element => {
+                             let Menu = element.menu;
+                            let Price =  element.price;
+                            let Quantity =  element.quantity;
+                             let Images = element.images;
+                            let Totalbill =  element.payablbill;
+                      bill_print.innerHTML += `<tr><td>${Menu}</td><td>${Price}</td><td>${Quantity}</td><td>${Images}</td><td>${Totalbill}</td></tr>`; 
+                          });
+                          }
+            //           }
+            //   }
+              const submit_data=()=>{
+                let   checkitems = document.getElementsByClassName('checkbox');
+                     
+                      for(let dish of checkitems){
+                          if(dish.checked){
+                              let menu = dish.parentNode.parentNode.previousElementSibling.previousElementSibling.innerHTML;
+                              let price = +dish.parentNode.parentNode.previousElementSibling.innerHTML;
+                              let quantity = +dish.parentNode.parentNode.nextElementSibling.querySelector('.qty').value;
+                              let images = dish.parentNode.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+                              let payablbill = bill_payment.value;
+                              let All_Data_Menu={
+                                  menu,price,quantity,images,payablbill
+                              }
+                                  hotel_data.push(All_Data_Menu);
+                                  localStorage.setItem("hotel_data", JSON.stringify(hotel_data))
+                          }
+                      }
+              }
+              </script>
+    
+</body>
+</html>
